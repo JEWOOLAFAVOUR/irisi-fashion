@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Menu, Search, User, X } from "lucide-react";
-// import { ShoppingBag } from "lucide-react";
+import { useCartStore } from "@/store/cartStore";
 
 const menuLinks = [
-  { name: "SHOP", href: "/shop" },
+  { name: "SHOP", href: "/" },
   { name: "FW25 LOOKBOOK", href: "/lookbook" },
   { name: "NEWS", href: "/news" },
   { name: "ABOUT", href: "/about" },
@@ -26,6 +27,21 @@ const footerLinks = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { openCart, getItemCount } = useCartStore();
+  const [itemCount, setItemCount] = useState(0);
+
+  // Update item count on client side only
+  useEffect(() => {
+    setItemCount(getItemCount());
+  }, [getItemCount]);
+
+  // Subscribe to cart changes
+  useEffect(() => {
+    const unsubscribe = useCartStore.subscribe((state) => {
+      setItemCount(state.getItemCount());
+    });
+    return () => unsubscribe();
+  }, []);
 
   // Disable body scroll when menu is open
   useEffect(() => {
@@ -43,7 +59,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-300">
+      <header className="sticky top-0 z-40 bg-white border-b border-gray-300">
         <nav
           style={{
             paddingLeft: "20px",
@@ -62,9 +78,11 @@ export default function Navbar() {
             </button>
 
             {/* Center - Logo */}
-            <h1 className="absolute left-1/2 -translate-x-1/2 text-base font-medium tracking-widest uppercase">
-              IRISI FASHION
-            </h1>
+            <Link href="/" className="absolute left-1/2 -translate-x-1/2">
+              <h1 className="text-base font-medium tracking-widest uppercase">
+                IRISI FASHION
+              </h1>
+            </Link>
 
             {/* Right - Icons */}
             <div className="flex items-center gap-5">
@@ -74,13 +92,21 @@ export default function Navbar() {
               <button className="hover:opacity-60 transition cursor-pointer">
                 <User size={20} strokeWidth={1.2} />
               </button>
-              <button className="hover:opacity-60 transition cursor-pointer">
+              <button
+                className="hover:opacity-60 transition cursor-pointer relative"
+                onClick={openCart}
+              >
                 <Image
                   src="/icons/shop.png"
                   alt="Shop"
                   width={22}
                   height={20}
                 />
+                {itemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -97,7 +123,7 @@ export default function Navbar() {
 
       {/* Sidebar Menu */}
       <div
-        className={`fixed top-0 left-0 h-full w-[450px] max-w-[90vw] bg-[#555555]/94 backdrop-blur-sm z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-full w-[450px] max-w-[90vw] bg-[#555555]/95 backdrop-blur-sm z-50 transform transition-transform duration-500 ease-in-out ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

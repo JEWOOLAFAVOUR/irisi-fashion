@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Product } from "@/data/products";
 
 interface ProductCardProps {
@@ -9,20 +10,23 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <div className="group cursor-pointer">
+    <Link
+      href={`/product/${product.id}`}
+      className="group cursor-pointer block"
+    >
       {/* Product Image */}
       <div className="relative aspect-square mb-4 overflow-hidden bg-gray-100">
         <Image
           src={product.image}
           alt={product.name}
           fill
-          className="object-cover"
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
           sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
         />
       </div>
 
       {/* Product Info */}
-      <div className="flex items-start justify-between gap-2">
+      <div className="flex items-start justify-between gap-2 mt-2">
         <p className="text-xs text-black leading-tight">
           {product.category} / {product.name}
         </p>
@@ -34,6 +38,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
         )}
       </div>
-    </div>
+    </Link>
   );
 }
