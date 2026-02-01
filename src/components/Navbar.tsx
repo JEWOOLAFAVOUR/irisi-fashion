@@ -97,32 +97,36 @@ export default function Navbar() {
 
       {/* Sidebar Menu */}
       <div
-        className={`fixed top-0 left-0 h-full w-[420px] max-w-[90vw] bg-[#555555]/94 backdrop-blur-sm z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-full w-[450px] max-w-[90vw] bg-[#555555]/94 backdrop-blur-sm z-50 transform transition-transform duration-300 ease-in-out ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex flex-col h-full text-white">
+        <div
+          className="flex flex-col h-full text-white"
+          style={{ paddingLeft: "32px", paddingRight: "70px" }}
+        >
           {/* Close Button - Top Left */}
-          <div className="flex justify-end" style={{ padding: "32px" }}>
+          <div
+            className="flex justify-end"
+            style={{ paddingTop: "32px", paddingBottom: "32px" }}
+          >
             <button
               onClick={() => setIsMenuOpen(false)}
               className="hover:opacity-60 transition cursor-pointer"
             >
-              <X size={20} strokeWidth={1.5} />
+              <X size={25} strokeWidth={1.5} />
             </button>
           </div>
 
           {/* Main Menu Links */}
-          <nav
-            className="flex-1 pt-4"
-            style={{ paddingLeft: "48px", paddingRight: "48px" }}
-          >
+          <nav className="flex-1 pt-4">
             <ul className="space-y-8">
               {menuLinks.map((link) => (
-                <li key={link.name}>
+                <li key={link.name} style={{ marginBottom: "20px" }}>
                   <a
                     href={link.href}
-                    className="text-lg font-medium tracking-[0.2em] hover:opacity-60 transition block"
+                    className="text-sm tracking-[0.2em] hover:opacity-60 transition block text-white/90"
+                    style={{ fontWeight: 400 }}
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.name}
@@ -135,8 +139,6 @@ export default function Navbar() {
           {/* Newsletter */}
           <div
             style={{
-              paddingLeft: "48px",
-              paddingRight: "48px",
               paddingTop: "40px",
               paddingBottom: "40px",
             }}
@@ -147,7 +149,7 @@ export default function Navbar() {
                 placeholder="Enter your email"
                 className="flex-1 bg-transparent text-sm text-white/80 placeholder-white/60 outline-none"
               />
-              <button className="text-sm font-medium tracking-wide hover:opacity-60 transition ml-4">
+              <button className="text-xs font-normal tracking-wide hover:opacity-60 transition ml-4">
                 Subscribe
               </button>
             </div>
@@ -156,8 +158,6 @@ export default function Navbar() {
           {/* Footer Links */}
           <div
             style={{
-              paddingLeft: "48px",
-              paddingRight: "48px",
               paddingBottom: "48px",
             }}
           >
