@@ -178,8 +178,8 @@ export default function ShopPage() {
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-12"
         >
           <AnimatePresence mode="popLayout">
-            {filteredAndSortedProducts.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
+            {filteredAndSortedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
             ))}
           </AnimatePresence>
         </motion.div>

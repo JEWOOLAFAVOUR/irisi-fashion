@@ -5,7 +5,25 @@ export interface Product {
   category: string;
   image: string;
   isSoldOut?: boolean;
+  isNew?: boolean;
 }
+
+export const categories = [
+  "All",
+  "FOOTWEAR",
+  "TOPS",
+  "BOTTOMS",
+  "OUTERWEAR",
+  "ACCESSORIES",
+  "SUITING",
+  "KNITWEAR",
+  "SHIRTS",
+  "DENIM",
+  "ACTIVEWEAR",
+  "SWIM",
+  "LOUNGEWEAR",
+  "SEASONAL",
+];
 
 export const products: Product[] = [
   // FOOTWEAR
