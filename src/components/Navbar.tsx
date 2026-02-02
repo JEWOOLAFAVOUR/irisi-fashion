@@ -27,8 +27,19 @@ const footerLinks = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { openCart, getItemCount } = useCartStore();
   const [itemCount, setItemCount] = useState(0);
+
+  // Track scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Update item count on client side only
   useEffect(() => {
@@ -77,11 +88,32 @@ export default function Navbar() {
               <Menu size={22} strokeWidth={1.2} />
             </button>
 
-            {/* Center - Logo */}
+            {/* Center - Logo (switches between text and image on scroll) */}
             <Link href="/" className="absolute left-1/2 -translate-x-1/2">
-              <h1 className="text-base font-medium tracking-widest uppercase">
-                IRISI FASHION
-              </h1>
+              <div className="relative h-6 flex items-center justify-center">
+                {/* Text Logo - visible at top */}
+                <h1
+                  className={`text-base font-medium tracking-widest uppercase transition-opacity duration-300 ${
+                    isScrolled ? "opacity-0" : "opacity-100"
+                  }`}
+                >
+                  IRISI FASHION
+                </h1>
+                {/* Image Logo - visible when scrolled */}
+                <div
+                  className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
+                    isScrolled ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  <Image
+                    src="/irisi-fashion-logo.jpg"
+                    alt="IRISI Fashion"
+                    width={32}
+                    height={32}
+                    className="object-contain"
+                  />
+                </div>
+              </div>
             </Link>
 
             {/* Right - Icons */}

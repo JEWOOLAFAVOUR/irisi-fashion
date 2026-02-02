@@ -5,6 +5,10 @@ export const metadata: Metadata = {
   title: "IRISI - Luxury Fashion",
   description:
     "Discover timeless elegance at IRISI. Shop premium fashion essentials crafted with exceptional quality.",
+  icons: {
+    icon: "/irisi-fashion-logo.jpg",
+    apple: "/irisi-fashion-logo.jpg",
+  },
 };
 
 export default function RootLayout({
