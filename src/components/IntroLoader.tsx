@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface IntroLoaderProps {
@@ -8,14 +8,64 @@ interface IntroLoaderProps {
 }
 
 export default function IntroLoader({ onComplete }: IntroLoaderProps) {
-  const [phase, setPhase] = useState(1);
+  const [phase, setPhase] = useState(0); // Start at 0 for click-to-enter
+  const [started, setStarted] = useState(false);
+  const introSoundRef = useRef<HTMLAudioElement | null>(null);
+  const curtainSoundRef = useRef<HTMLAudioElement | null>(null);
 
+  // Handle click to start
+  const handleStart = () => {
+    setStarted(true);
+    setPhase(1);
+
+    // Play intro sound after user interaction
+    introSoundRef.current = new Audio("/audio/nouveau-jingle-netflix.mp3");
+    introSoundRef.current.volume = 0.5;
+    introSoundRef.current.play().catch((e) => {
+      console.log("Audio play failed:", e);
+    });
+  };
+
+  // Cleanup on unmount
   useEffect(() => {
+    return () => {
+      if (introSoundRef.current) {
+        introSoundRef.current.pause();
+        introSoundRef.current = null;
+      }
+      if (curtainSoundRef.current) {
+        curtainSoundRef.current.pause();
+        curtainSoundRef.current = null;
+      }
+    };
+  }, []);
+
+  // Play curtain sound when phase 3 starts (curtains closing)
+  useEffect(() => {
+    if (phase === 3) {
+      // Fade out intro sound
+      if (introSoundRef.current) {
+        introSoundRef.current.pause();
+      }
+
+      // Play curtain sound
+      curtainSoundRef.current = new Audio("/audio/intro_cinematic-270840.mp3");
+      curtainSoundRef.current.volume = 0.6;
+      curtainSoundRef.current.play().catch((e) => {
+        console.log("Curtain audio play failed:", e);
+      });
+    }
+  }, [phase]);
+
+  // Phase timers - only start when user clicks
+  useEffect(() => {
+    if (!started) return;
+
     const phase2Timer = setTimeout(() => setPhase(2), 2000);
     const phase3Timer = setTimeout(() => setPhase(3), 4000);
     const phase4Timer = setTimeout(() => setPhase(4), 5200);
     const phase5Timer = setTimeout(() => setPhase(5), 6200);
-    const completeTimer = setTimeout(() => onComplete(), 7500);
+    const completeTimer = setTimeout(() => onComplete(), 8700);
 
     return () => {
       clearTimeout(phase2Timer);
@@ -24,7 +74,38 @@ export default function IntroLoader({ onComplete }: IntroLoaderProps) {
       clearTimeout(phase5Timer);
       clearTimeout(completeTimer);
     };
-  }, [onComplete]);
+  }, [onComplete, started]);
+
+  // Phase 0: Click to enter
+  if (phase === 0) {
+    return (
+      <div
+        className="fixed inset-0 z-[100] bg-[#0a0a0a] flex items-center justify-center cursor-pointer"
+        onClick={handleStart}
+      >
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="text-white/40 text-sm tracking-[0.3em] mb-4">
+            WELCOME TO
+          </p>
+          <h1 className="text-white text-4xl md:text-6xl font-light tracking-[0.2em] mb-8">
+            IRISI FASHION
+          </h1>
+          <motion.p
+            className="text-white/60 text-xs tracking-[0.2em]"
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            CLICK TO ENTER
+          </motion.p>
+        </motion.div>
+      </div>
+    );
+  }
 
   // Phase 5: Curtains open revealing page
   if (phase === 5) {
