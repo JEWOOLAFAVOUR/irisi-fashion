@@ -39,7 +39,7 @@ A luxury e-commerce experience inspired by Aimé Leon Dore. Built with Next.js 1
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/irisi-fashion.git
+git clone https://github.com/JEWOOLAFAVOUR/irisi-fashion
 
 # Navigate to project directory
 cd irisi-fashion
