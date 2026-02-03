@@ -17,14 +17,14 @@ A luxury e-commerce experience inspired by Aimé Leon Dore. Built with Next.js 1
 
 ## Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| Next.js 16 | React framework with App Router |
-| TypeScript | Type-safe development |
-| Tailwind CSS | Utility-first styling |
-| Zustand | Lightweight state management |
-| Framer Motion | Animation library |
-| Lucide React | Icon system |
+| Technology    | Purpose                         |
+| ------------- | ------------------------------- |
+| Next.js 16    | React framework with App Router |
+| TypeScript    | Type-safe development           |
+| Tailwind CSS  | Utility-first styling           |
+| Zustand       | Lightweight state management    |
+| Framer Motion | Animation library               |
+| Lucide React  | Icon system                     |
 
 ---
 
@@ -32,7 +32,7 @@ A luxury e-commerce experience inspired by Aimé Leon Dore. Built with Next.js 1
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm, yarn, pnpm, or bun
 
 ### Installation
@@ -79,12 +79,12 @@ src/
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server with Turbopack |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
+| Command         | Description                             |
+| --------------- | --------------------------------------- |
+| `npm run dev`   | Start development server with Turbopack |
+| `npm run build` | Build for production                    |
+| `npm run start` | Start production server                 |
+| `npm run lint`  | Run ESLint                              |
 
 ---
 
