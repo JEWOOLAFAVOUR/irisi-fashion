@@ -13,17 +13,28 @@ export default function IntroLoader({ onComplete }: IntroLoaderProps) {
   const introSoundRef = useRef<HTMLAudioElement | null>(null);
   const curtainSoundRef = useRef<HTMLAudioElement | null>(null);
 
+  // Preload audio on mount
+  useEffect(() => {
+    introSoundRef.current = new Audio("/audio/nouveau-jingle-netflix.mp3");
+    introSoundRef.current.volume = 1.0;
+    introSoundRef.current.load();
+
+    curtainSoundRef.current = new Audio("/audio/intro_cinematic-270840.mp3");
+    curtainSoundRef.current.volume = 1.0;
+    curtainSoundRef.current.load();
+  }, []);
+
   // Handle click to start
   const handleStart = () => {
+    // Play intro sound IMMEDIATELY on click
+    if (introSoundRef.current) {
+      introSoundRef.current.play().catch((e) => {
+        console.log("Audio play failed:", e);
+      });
+    }
+
     setStarted(true);
     setPhase(1);
-
-    // Play intro sound after user interaction
-    introSoundRef.current = new Audio("/audio/nouveau-jingle-netflix.mp3");
-    introSoundRef.current.volume = 0.5;
-    introSoundRef.current.play().catch((e) => {
-      console.log("Audio play failed:", e);
-    });
   };
 
   // Cleanup on unmount
@@ -48,12 +59,12 @@ export default function IntroLoader({ onComplete }: IntroLoaderProps) {
         introSoundRef.current.pause();
       }
 
-      // Play curtain sound
-      curtainSoundRef.current = new Audio("/audio/intro_cinematic-270840.mp3");
-      curtainSoundRef.current.volume = 0.6;
-      curtainSoundRef.current.play().catch((e) => {
-        console.log("Curtain audio play failed:", e);
-      });
+      // Play curtain sound (already preloaded)
+      if (curtainSoundRef.current) {
+        curtainSoundRef.current.play().catch((e) => {
+          console.log("Curtain audio play failed:", e);
+        });
+      }
     }
   }, [phase]);
 
