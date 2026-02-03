@@ -8,13 +8,13 @@ import { useCartStore } from "@/store/cartStore";
 
 const menuLinks = [
   { name: "SHOP", href: "/" },
-  { name: "FW25 LOOKBOOK", href: "/lookbook" },
-  { name: "NEWS", href: "/news" },
-  { name: "ABOUT", href: "/about" },
-  { name: "STORES", href: "/stores" },
-  { name: "CAFÉ", href: "/cafe" },
-  { name: "SONNY", href: "/sonny" },
-  { name: "SOUND", href: "/sound" },
+  { name: "FW25 LOOKBOOK", href: "#" },
+  { name: "NEWS", href: "#" },
+  { name: "ABOUT", href: "#" },
+  { name: "STORES", href: "#" },
+  { name: "CAFÉ", href: "#" },
+  { name: "SONNY", href: "#" },
+  { name: "SOUND", href: "#" },
 ];
 
 const footerLinks = [
@@ -155,7 +155,7 @@ export default function Navbar() {
 
       {/* Sidebar Menu */}
       <div
-        className={`fixed top-0 left-0 h-full w-[450px] max-w-[90vw] bg-[#555555]/95 backdrop-blur-sm z-50 transform transition-transform duration-500 ease-in-out ${
+        className={`fixed top-0 left-0 h-full w-[450px] max-w-[90vw] bg-[#555555]/95 backdrop-blur-sm z-50 transform transition-transform duration-1000 ease-out ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -182,10 +182,18 @@ export default function Navbar() {
               {menuLinks.map((link) => (
                 <li key={link.name} style={{ marginBottom: "20px" }}>
                   <a
-                    href={link.href}
-                    className="text-sm tracking-[0.2em] hover:opacity-60 transition block text-white/90"
+                    href="#"
+                    className="text-sm tracking-[0.2em] hover:opacity-60 transition block text-white/90 cursor-default"
                     style={{ fontWeight: 400 }}
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (link.href !== "/" && link.href !== "#") {
+                        return;
+                      }
+                      if (link.href === "/") {
+                        setIsMenuOpen(false);
+                      }
+                    }}
                   >
                     {link.name}
                   </a>

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { X, Minus, Plus } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function CartSidebar() {
@@ -17,6 +17,13 @@ export default function CartSidebar() {
     recentlyViewed,
   } = useCartStore();
 
+  const [mounted, setMounted] = useState(false);
+
+  // Fix hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Disable body scroll when cart is open
   useEffect(() => {
     if (isCartOpen) {
@@ -29,7 +36,7 @@ export default function CartSidebar() {
     };
   }, [isCartOpen]);
 
-  const subtotal = getSubtotal();
+  const subtotal = mounted ? getSubtotal() : 0;
 
   return (
     <>
@@ -40,7 +47,7 @@ export default function CartSidebar() {
 
       {/* Cart Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full w-[450px] max-w-[95vw] bg-white z-50 transform transition-transform duration-500 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-[450px] max-w-[95vw] bg-white z-50 transform transition-transform duration-1000 ease-out ${
           isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

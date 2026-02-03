@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
 import CartSidebar from "@/components/CartSidebar";
+import IntroLoader from "@/components/IntroLoader";
 import { products } from "@/data/products";
 
 // Fisher-Yates shuffle algorithm
@@ -17,25 +18,34 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 export default function Home() {
-  // Randomize products on each page load
-  const shuffledProducts = useMemo(() => shuffleArray(products), []);
+  const [showIntro, setShowIntro] = useState(true);
+  const [shuffledProducts, setShuffledProducts] = useState(products);
+
+  // Shuffle products only on client side after mount
+  useEffect(() => {
+    setShuffledProducts(shuffleArray(products));
+  }, []);
 
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      <CartSidebar />
+    <>
+      {showIntro && <IntroLoader onComplete={() => setShowIntro(false)} />}
 
-      {/* Product Grid */}
-      <main
-        className="px-4"
-        style={{ paddingLeft: "20px", paddingRight: "20px" }}
-      >
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-8">
-          {shuffledProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </main>
-    </div>
+      <div className="min-h-screen bg-white">
+        <Navbar />
+        <CartSidebar />
+
+        {/* Product Grid */}
+        <main
+          className="px-4"
+          style={{ paddingLeft: "20px", paddingRight: "20px" }}
+        >
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-8">
+            {shuffledProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </main>
+      </div>
+    </>
   );
 }
