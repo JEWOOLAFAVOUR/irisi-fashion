@@ -5,6 +5,7 @@ import { X, Minus, Plus } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useClickSound } from "@/hooks/useClickSound";
 
 export default function CartSidebar() {
   const {
@@ -18,6 +19,7 @@ export default function CartSidebar() {
   } = useCartStore();
 
   const [mounted, setMounted] = useState(false);
+  const playClick = useClickSound();
 
   // Fix hydration mismatch
   useEffect(() => {
@@ -113,9 +115,10 @@ export default function CartSidebar() {
                       {/* Quantity Controls */}
                       <div className="flex items-center gap-3 mt-3">
                         <button
-                          onClick={() =>
-                            updateQuantity(item.product.id, item.quantity - 1)
-                          }
+                          onClick={() => {
+                            playClick();
+                            updateQuantity(item.product.id, item.quantity - 1);
+                          }}
                           className="hover:opacity-60 transition"
                         >
                           <Minus size={14} strokeWidth={1.5} />
@@ -124,9 +127,10 @@ export default function CartSidebar() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() =>
-                            updateQuantity(item.product.id, item.quantity + 1)
-                          }
+                          onClick={() => {
+                            playClick();
+                            updateQuantity(item.product.id, item.quantity + 1);
+                          }}
                           className="hover:opacity-60 transition"
                         >
                           <Plus size={14} strokeWidth={1.5} />
@@ -136,7 +140,10 @@ export default function CartSidebar() {
 
                     {/* Remove Button */}
                     <button
-                      onClick={() => removeItem(item.product.id)}
+                      onClick={() => {
+                        playClick();
+                        removeItem(item.product.id);
+                      }}
                       className="text-xs underline hover:opacity-60 transition self-start"
                     >
                       REMOVE

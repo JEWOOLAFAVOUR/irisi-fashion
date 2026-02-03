@@ -9,6 +9,7 @@ import CartSidebar from "@/components/CartSidebar";
 import { products, Product } from "@/data/products";
 import { useCartStore } from "@/store/cartStore";
 import Link from "next/link";
+import { useClickSound } from "@/hooks/useClickSound";
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 const colors = [
@@ -41,6 +42,7 @@ export default function ProductPage() {
   const [recommendations, setRecommendations] = useState<Product[]>([]);
 
   const { addItem, addToRecentlyViewed } = useCartStore();
+  const playClick = useClickSound();
 
   useEffect(() => {
     const foundProduct = products.find((p) => p.id === productId);
@@ -69,6 +71,10 @@ export default function ProductPage() {
       setIsSizeOpen(true);
       return;
     }
+
+    // Play click sound
+    playClick();
+
     addItem(product, selectedSize, selectedColor);
   };
 
